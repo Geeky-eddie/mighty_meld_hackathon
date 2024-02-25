@@ -2,6 +2,8 @@ import { useState } from "react";
 import confetti from "canvas-confetti";
 import * as icons from "react-icons/gi";
 import { Tile } from "./Tile";
+import "./index.css";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const possibleTileContents = [
   icons.GiHearts,
@@ -16,12 +18,48 @@ export const possibleTileContents = [
   icons.GiOpenBook,
 ];
 
-export function StartScreen({ start }) {
+const bothclasses =
+  "flex flex-col w-full max-w-[320px] h-[320px] gap-y-8 rounded-lg p-2 mt-16 items-center";
+const contained = "flex justify-center w-full";
+
+const loading = ({ onComplete }) => {
+  const [count, setCount] = useState(3);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount((prevCount) => prevCount - 1);
+    }, 1000);
+    if (count === 0) {
+      clearInterval(interval);
+
+      onComplete();
+    }
+    return () => clearInterval(interval);
+  }, [count, onComplete]);
+
   return (
     <div>
-      <button onClick={start} className="bg-gray-400 text-white p-3">
-        Play
-      </button>
+      <div></div>
+    </div>
+  );
+};
+
+export function StartScreen({ start }) {
+  return (
+    <div className={contained}>
+      <div className={`${bothclasses} bg-pink-50 pt-16`}>
+        <h1 className="text-3xl text-pink-500 font-bold">Memory</h1>
+
+        <p className="text-pink-500 font-medium">
+          Flip over tiles looking for pairs
+        </p>
+        <button
+          onClick={start}
+          className="bg-gradient-to-b from-pink-400 to-pink-600 rounded-full transition duration-300 shadow-md shadow-black/10 hover:opacity -70 text-white px-16 py-2"
+        >
+          Play
+        </button>
+      </div>
     </div>
   );
 }
